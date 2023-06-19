@@ -1,0 +1,374 @@
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+#seatLayoutOperationList {
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    border: 0px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #F5F5F5;
+    color: #333;
+    border-radius: 5px;
+}
+
+#seatLayoutOperationList li{
+    padding: 0px 1px;
+    cursor: pointer;
+    margin: 0px;
+}
+
+#seatLayoutOperationList li:hover {
+    background-color: #DEF;
+}
+.myDiv {
+  border: 1px outset red;
+  background-color: white;    
+  text-align: center;
+  width: 230px;
+  border-radius: 5px;
+}
+.col-container {
+  display: table;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  clear: both;
+}
+.col-container1 {
+  display: table;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  clear: both;
+}
+.col {
+  display: table-cell;
+  padding: 10px;
+  border-radius: 5px;
+  float: left;
+}
+.col2 {
+  display: table-cell;
+  padding: 10px;
+  border-radius: 5px;
+  float: right;
+}
+.toilet1 {
+            width: 50px;
+            height: 40px;
+            margin-bottom: 10px;
+            background-color:#FFF3E2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding:6px;
+            box-sizing: border-box;
+            display: flex;
+            float:right;
+            align-items: center;
+}
+.toilet2{
+            width: 50px;
+            height: 40px;
+            margin-right:120px;
+            background-color:#FFF3E2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding:6px;
+            box-sizing: border-box;
+            display: flex;
+            float:left;
+            align-items: center;
+}
+
+.toilet3{
+            width: 50px;
+            height: 40px;
+            background-color:#FFF3E2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding:6px;
+            float:left;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+}
+.toilet4{
+            width: 50px;
+            height: 40px;
+            margin-left:120px;
+            background-color:#FFF3E2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding:6px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            float : right;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <ul id='seatLayoutOperationList' style='z-index:100;'>
+        <li data-action = "removeSeat">Remove</li>
+      </ul>
+
+<div class="myDiv" id="container">
+<div class="column">
+	<div class="toilet1">Rest<br>Room</div>
+    <div class="toilet2">Rest<br>Room</div>
+</div>
+
+<script>
+    let seatNo = 0;
+    var currentFloat='left';
+    var seatPositionArray=[];
+    var noOfColumn=0;
+  $(document).ready(function() {
+    let leftSideSeat=2;
+    let rightSideSeat=3;
+    let noOfRow=10;
+     
+     noOfColumn=leftSideSeat+rightSideSeat+1;
+    let leftColorArray = [], leftSeatPositionArray=[];
+    let rightColorArray=[], rightSeatPositionArray=[];
+    let passegeColor=["#FFFFFF"];
+    let displaySeat = "00";
+    let window = ['#99DBF5'];
+    let middle = ['#FFDEDE'];
+    let side = ['#F6FA70'];
+    if(leftSideSeat==2)
+    {
+    leftColorArray = [window, side];
+    leftSeatPositionArray=["W", "A"];
+    }
+    else
+    {
+    leftColorArray = [window, middle,side];
+    leftSeatPositionArray=["W","M", "A"];
+    }
+    if(rightSideSeat==2)
+    {
+    rightColorArray = [side,window];
+    rightSeatPositionArray=["A","W"];
+    }
+    else
+    {
+    rightColorArray = [side, middle,window];
+    rightSeatPositionArray=["A","M","W"];
+    }
+    var passageSeatPositionArray=["P"];
+    var colorArray = leftColorArray.concat(passegeColor, rightColorArray);
+    seatPositionArray=leftSeatPositionArray.concat(passageSeatPositionArray, rightSeatPositionArray);
+    //alert(colorArray);
+    
+    for (var r = 1; r <= noOfRow; r++) {
+      var newDiv = $('<div>', { class: 'col-container' });
+       
+      for (let col= 0; col <noOfColumn ; col++) {
+        let displaySeat="";
+        var newCol="";
+        //let className="";
+        if (col ===leftSideSeat) {
+          displaySeat = "";
+         newCol = $('<div>', { class:'col', style:'margin-left:15px;margin-right:15px;margin-top:10px;background: ' + colorArray[col] });
+         // className=col2;
+        } 
+        else {
+          seatNo++;
+          displaySeat=seatNo.toString().padStart(2, '0');
+          newCol = $('<div>', { class:'col', style: 'background: ' + colorArray[col] });
+         // className=col;
+        }
+    
+        //alert(newCol);
+       var seatNumber=$('<span>', { class: 'seat-number' });
+        seatNumber.text(displaySeat);
+        newCol.append(seatNumber);
+        newDiv.append(newCol);
+      }   //end of column loop
+
+      $('#container').append(newDiv);
+    }   // end of row loop
+    //toilet code
+    
+    $('#container').append('<div class="col-container1"><div class="column"><div class="toilet3"style=margin-top:10px;>Rest<br>Room</div><div class="toilet4">Rest<br>Room</div></div></div>');
+    
+
+    $('#addDivButton').click(function() {
+     // var divCount = $('.myDiv .col-container').length;
+      var rowAppend="";
+       rowAppend=rowAppend+"<div class='col-container'>";
+      for(var col=0; col<noOfColumn; col++)
+      {
+        let displaySeat = "";
+        if (col ===leftSideSeat) {
+          displaySeat = "";
+          rowAppend= rowAppend+"<div class='col' style='float:"+currentFloat+";margin-left:15px;margin-right:15px;background-color:"+colorArray[col]+";'>"+displaySeat+"</div>";
+          //newCol = $('<div>', { class:'col', style:'margin-left:15px;margin-right:15px;background: ' + colorArray[col] });
+         // className=col2;
+        } 
+        else
+        {
+            seatNo++;
+             displaySeat=seatNo.toString().padStart(2, '0');
+             rowAppend= rowAppend+"<div class='col' style='float:"+currentFloat+";margin-top:10px;background-color:"+colorArray[col]+";'>"+displaySeat+"</div>";
+        }
+        
+      }
+      rowAppend=rowAppend+"</div>";
+   $('#container .col-container').last().append(rowAppend);
+    
+    });
+
+    $('#removeDivButton').click(function() {
+      //var divCount = $('.myDiv .col-container').length;
+      $('#container .col-container').last().remove();
+      seatNo=seatNo-leftSideSeat-rightSideSeat;
+    });
+    $('#saveData').click(function(){
+      var seatPropertyArray=[];
+      let rowNo=0, colNo=0;
+      $('#container .col-container').each(function(index){
+        rowNo=index+1;
+        for(let seat=0; seat<=seatNo; seat++)
+        {
+          colNo=seat+1;
+        let seatProperty={};
+        seatProperty.col=colNo;
+        seatProperty.row=rowNo;
+        seatProperty.seatNo=$(this).find(".col:eq("+seat+")").text();
+        
+        seatProperty.seatPosition=seatPositionArray[seat];
+        let passageValue=false;
+        if(seatPositionArray[seat]=="P")
+        {passageValue=true;}
+        else
+        {
+          passageValue=false;
+        }
+        seatProperty.passageFlag=passageValue;
+        seatPropertyArray.push(seatProperty);
+        }
+       
+        
+      });
+      alert(JSON.stringify(seatPropertyArray));
+    });
+
+    $('#ViewData').click(function(){
+    var seatPropertyArray=[];
+    let rowNo=0, colNo=0;
+    $('#container .col-container').each(function(index){
+      rowNo=index+1;
+      for(let seat=0; seat<=seatNo; seat++)
+      {
+        colNo=seat+1;
+      let seatProperty={};
+      seatProperty.col=colNo;
+      seatProperty.row=rowNo;
+      seatProperty.seatNo=$(this).find(".col:eq("+seat+")").text();
+      
+      seatProperty.seatPosition=seatPositionArray[seat];
+      let passageValue=false;
+      if(seatPositionArray[seat]=="P")
+      {passageValue=true;}
+      else
+      {
+        passageValue=false;
+      }
+      seatProperty.passageFlag=passageValue;
+      seatPropertyArray.push(seatProperty);
+      }
+     
+      
+    });
+    alert(JSON.stringify(seatPropertyArray));
+  });
+
+    $('#changeFloatButton').click(function() {
+      $('.col').each(function() {
+         //currentFloat = $(this).css('float');
+        $(this).css('float', currentFloat === 'left' ? 'right' : 'left');
+        
+      });
+      if(currentFloat=='left')
+      currentFloat='right';
+      else
+      currentFloat='left';
+    });
+
+
+
+$('.col').bind("contextmenu",function(event){
+    event.preventDefault();
+   // Show contextmenu
+   var topPosition=event.pageY-50;
+   var leftPosition=event.pageX;
+   $("#seatLayoutOperationList").finish().toggle(100).css({
+          top: topPosition + "px",
+          left: leftPosition + "px"
+          
+      
+   });
+   
+    $(document).on("click", ".col", function(e) {
+                $('.col').removeClass('selected');
+                $(this).addClass('selected');
+                var pos = $(this).offset();
+
+                $('#seatLayoutOperationList').css({
+                    'position': 'absolute',
+                    'top': pos.top - 30 + 'px',
+                    'left': pos.left + 'px',
+                    'display': 'inline'
+                }).appendTo($(this));
+
+                e.stopPropagation();
+            });
+
+            $(document).on("click", "#seatLayoutOperationList li[data-action='removeSeat']", function() {
+                $('.col').each(function() {
+                    if ($(this).hasClass('selected')) {
+                        $(this).remove();
+                        seatNo--;
+                    }
+                });
+                $('#seatLayoutOperationList').hide();
+            });
+   
+   
+   
+   
+});
+
+
+  });
+</script>
+</div>
+
+<button id="addDivButton">Add Seat</button>
+<button id="removeDivButton">Remove Seat</button>
+<button id="changeFloatButton">Switch Seat</button>
+<button id="saveData">Save Data</button>
+<button id="ViewData">View Data</button>
+
+
+</body>
+</html>
+
+
+
