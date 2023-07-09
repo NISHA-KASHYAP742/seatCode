@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+           :root {
+            --seat-width: 45px;
+            --seat-height: 25px;
+            --row-gap: 5px;
+            --seat-row-gap: 25px;
+            --column-gap: 10px;
+
+           }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            .container {
+                display: grid;
+                row-gap: var(--row-gap);
+            }
+            .row-container {
+                display: grid;
+                grid-template-columns: calc(var(--seat-width)*2) var(--column-gap) var(--seat-width);
+                background-color: #FEF2F4;
+                border: 2px solid rgb(225, 148, 148);
+                width: calc(var(--seat-width)*3 + var(--column-gap))
+            }
+
+            .left-container {
+                display: grid;
+                grid-template-columns: 45px 45px;
+                row-gap: var(--seat-row-gap);
+                grid-template-rows: var(--seat-height) var(--seat-height);
+               
+            }
+
+            .seat {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #A7EDE7;
+                border: 2px solid rgb(225, 148, 148);
+                
+            }
+            .right-container {
+                display: grid;
+                grid-template-rows: var(--seat-height) var(--seat-height);
+                row-gap: var(--seat-row-gap);
+                
+            }
+            #Window {
+                background-color: #C5DFF8;   
+            }
+            #W1 {
+                background-color: #ACBCFF;
+  
+            }
+            #W2 {
+                background-color: #E6FFFD;
+  
+            }
+            #W3 {
+                background-color: #AEE2FF;
+            }
+            #Aside {
+				background-color: #A7EDE7;    
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Javascript will add rows here -->
+        </div>
+    </body>
+    <script>
+        let numberingSeats = function () {
+            let seatNo = 0;
+            let seats = document.getElementsByClassName("seat");
+            for (let seat of seats) {
+                seat.textContent = ++seatNo;
+            }
+        }
+        
+        
+
+        let addRow = function () {
+            let rowContainer = document.createElement('div');
+            rowContainer.classList.add("row-container");
+            rowContainer.innerHTML = `<div class="left-container">
+                    <div class="seat" id="Window">1</div>
+                    <div class="seat" id="Aside">3</div>
+                    <div class="seat" id="Window">3</div>
+                    <div class="seat" id="Aside">4</div>
+                </div>
+
+                <div class="gap"></div>
+
+                <div class="right-container">
+                    <div class="seat" id="W1">7</div>
+                    <div class="seat" id="W2">8</div>
+                </div>`;
+            document.getElementsByClassName("container")[0].append(rowContainer);
+            numberingSeats();
+        }
+        //  adding rows
+        for (let i =0; i < 8 ; i++){
+            addRow();
+        }
+
+
+    </script>
+</html>

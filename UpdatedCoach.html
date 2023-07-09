@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        /* CSS styles */
+
+        #seatLayoutOperationList {
+            display: none;
+            position: absolute;
+            overflow: hidden;
+            border: 0px solid #ccc;
+            white-space: nowrap;
+            font-family: sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        #seatLayoutOperationList li {
+            padding: 0px 1px;
+            cursor: pointer;
+            margin: 0px;
+        }
+
+
+        #seatLayoutOperationList li:hover {
+            background-color: #def;
+        }
+
+        .myDiv {
+            border: 1px outset red;
+            background-color: white;
+            text-align: center;
+            width: 230px;
+            border-radius: 5px;
+        }
+
+        .mainDiv {
+            margin-top: 0px;
+            border: 5px solid red;
+            width: 460px;
+            border-radius: 5px;
+           
+
+        }
+
+        .RadioButtonDiv {
+            /* border: 1px outset red; */
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            width: 230px;
+            border-radius: 5px;
+            margin-left: 24px;
+
+        }
+        /* .col-container {
+            display: table;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            clear: both;
+        }
+
+        */
+        .col-container {
+            display: flex;
+            width: fit-content;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            clear: both;
+            align-items: center;
+        }
+
+        .col-container1 {
+            display: table;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            clear: both;
+        }
+
+        .col {
+            display: table-cell;
+            padding: 10px;
+            border-radius: 5px;
+            float: left;
+        }
+
+        .col2 {
+            display: table-cell;
+            padding: 10px;
+            border-radius: 5px;
+            float: right;
+        }
+
+        .toilet1 {
+            width: 50px;
+            height: 40px;
+            margin-bottom: 10px;
+            background-color: #fff3e2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding: 6px;
+            box-sizing: border-box;
+            display: flex;
+            float: right;
+            align-items: center;
+        }
+
+        .toilet2 {
+            width: 50px;
+            height: 40px;
+            margin-right: 120px;
+            background-color: #fff3e2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding: 6px;
+            box-sizing: border-box;
+            display: flex;
+            float: left;
+            align-items: center;
+        }
+
+        .toilet3 {
+            width: 50px;
+            height: 40px;
+            background-color: #fff3e2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding: 6px;
+            float: left;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+        }
+
+        .toilet4 {
+            width: 50px;
+            height: 40px;
+            margin-left: 120px;
+            background-color: #fff3e2;
+            border-radius: 5px;
+            border: 1px solid;
+            text-align: center;
+            padding: 6px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            float: right;
+        }
+
+        .parent_col {
+            width: 230px;
+        }
+       
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <ul id="seatLayoutOperationList" style="z-index: 100">
+        <li data-action="removeSeat">Remove</li>
+    </ul>
+    <div class="mainDiv">
+
+
+        <div class="myDiv" id="container">
+            <div class="column">
+                <div class="toilet1">Rest<br />Room</div>
+                <div class="toilet2">Rest<br />Room</div>
+            </div>
+
+            <script>
+                let seatNo = 0;
+                var currentFloat = "left";
+                var seatPositionArray = [];
+                var noOfColumn = 0;
+
+                $(document).ready(function () {
+                    let leftSideSeat = 2;
+                    let rightSideSeat = 3;
+                    let noOfRow = 10;
+
+                    noOfColumn = leftSideSeat + rightSideSeat + 1;
+                    let leftColorArray = [],
+                        leftSeatPositionArray = [];
+                    let rightColorArray = [],
+                        rightSeatPositionArray = [];
+                    let passegeColor = ["#FFFFFF"];
+                    let displaySeat = "00";
+                    let window = ["#99DBF5"];
+                    let middle = ["#FFDEDE"];
+                    let side = ["#F6FA70"];
+                    if (leftSideSeat == 2) {
+                        leftColorArray = [window, side];
+                        leftSeatPositionArray = ["W", "A"];
+                    } else {
+                        leftColorArray = [window, middle, side];
+                        leftSeatPositionArray = ["W", "M", "A"];
+                    }
+                    if (rightSideSeat == 2) {
+                        rightColorArray = [side, window];
+                        rightSeatPositionArray = ["A", "W"];
+                    } else {
+                        rightColorArray = [side, middle, window];
+                        rightSeatPositionArray = ["A", "M", "W"];
+                    }
+                    var passageSeatPositionArray = ["P"];
+                    var colorArray = leftColorArray.concat(
+                        passegeColor,
+                        rightColorArray
+                    );
+                    seatPositionArray = leftSeatPositionArray.concat(
+                        passageSeatPositionArray,
+                        rightSeatPositionArray
+                    );
+
+                    for (var r = 1; r <= noOfRow; r++) {
+                        var newDiv = $("<div>", {
+                            class: "col-container",
+                        });
+                        var parentCol = $('<div>', {
+                            class: "parent_col"
+                        });
+
+                        for (let col = 0; col < noOfColumn; col++) {
+                            let displaySeat = "";
+                            var newCol = "";
+
+                            if (col === leftSideSeat) {
+                                displaySeat = "";
+                                newCol = $("<div>", {
+                                    class: "col",
+                                    style:
+                                        "margin-left:15px;margin-right:15px;margin-top:10px;background: " +
+                                        colorArray[col],
+                                });
+                            } else {
+                                seatNo++;
+                                displaySeat = seatNo.toString().padStart(2, "0");
+                                newCol = $("<div>", {
+                                    class: "col",
+                                    style: "border-bottom-style:solid;border-bottom-width:3px;background: " + colorArray[col],
+                                });
+                            }
+
+                            var seatNumber = $("<span>", {
+                                class: "seat-number",
+                            });
+                            seatNumber.text(displaySeat);
+                            newCol.append(seatNumber);
+                            parentCol.append(newCol);
+                            newDiv.append(parentCol);
+                        }
+
+
+                        let sideRadio = document.createElement("div");
+                        sideRadio.classList.add("RadioButtonDiv");
+                        sideRadio.innerHTML = '<form>'+
+                '<input type="radio" name="option" id="Front" value="Front">'+
+                '<label for="Front">Front</label>'+
+                ' <i>&#8593 </i>'+
+             
+               ' <input type="radio" name="option" id="Back" value="Back">'+
+                '<label for="Back">Back</label>'+
+                '  <i>&#8595</i>'+
+              '</form>';
+
+                        // sideRadio.style.margin = "8px 0px 0px 240px";
+                        newDiv.append(sideRadio);
+
+                        $("#container").append(newDiv);
+                    }
+
+                    $("#container").append(
+                        '<div class="col-container1"><div class="column"><div class="toilet3"style=margin-top:10px;>Rest<br>Room</div><div class="toilet4">Rest<br>Room</div></div></div>'
+                    );
+
+                    $("#addDivButton").click(function () {
+                        var rowAppend = "";
+                        // rowAppend = rowAppend + "<div class='col-container'>";
+                        for (var col = 0; col < noOfColumn; col++) {
+                            let displaySeat = "";
+                            if (col === leftSideSeat) {
+                                displaySeat = "";
+                                rowAppend =
+                                    rowAppend +
+                                    "<div class='col' style='float:" +
+                                    currentFloat +
+                                    ";margin-left:15px;margin-right:15px;background-color:" +
+                                    colorArray[col] +
+                                    ";'>" +
+                                    "<div class='seat-number'>" +
+                                    displaySeat +
+                                    "</div></div>";
+                            } else {
+                                seatNo++;
+                                displaySeat = seatNo.toString().padStart(2, "0");
+                                rowAppend =
+                                    rowAppend +
+                                    "<div class='col' style='float:" +
+                                    currentFloat +
+                                    ";margin-top:0px;border-bottom-style:solid;border-bottom-width:3px;background-color:" +
+                                    colorArray[col] +
+                                    ";'>" +
+                                    "<div class='seat-number'>" +
+                                    displaySeat +
+                                    "</div></div>";
+                            }
+                        }
+                        // rowAppend = rowAppend + "</div>";
+                        let colContainerNew = document.createElement("div");
+                        colContainerNew.classList.add("col-container");
+
+                        let parentColNew = document.createElement("div");
+                        parentColNew.classList.add("parent_col");
+                        colContainerNew.appendChild(parentColNew);
+
+                        parentColNew.innerHTML = rowAppend;
+
+
+                        let sideRadio = document.createElement("div");
+                        sideRadio.classList.add("RadioButtonDiv");
+                        sideRadio.innerHTML = '<form>'+
+                '<input type="radio" name="option" id="Front" value="Front">'+
+                '<label for="Front">Front</label>'+
+                ' <i>&#8593 </i>'+
+             
+               ' <input type="radio" name="option" id="Back" value="Back">'+
+                '<label for="Back">Back</label>'+
+                '  <i>&#8595</i>'+
+              '</form>';
+
+                        // sideRadio.style.margin = "8px 0px 0px 240px";
+
+                        colContainerNew.appendChild(sideRadio);
+
+                        document.getElementsByClassName("col-container1")[0].before(colContainerNew);
+                        // $("#container .col-container").last().append(rowAppend)
+
+
+
+
+                        // $("#container .col-container").last().append(sideRadio);
+
+                    });
+
+                    $("#removeDivButton").click(function () {
+                        // seatNo = seatNo - leftSideSeat - rightSideSeat;
+                        let temp = document.getElementsByClassName("col-container");
+                        let len = temp.length;
+                        seatNo =
+                            1 +
+                            seatNo -
+                            temp[len - 1].getElementsByClassName("seat-number").length;
+                        $("#container .col-container").last().remove();
+                    });
+
+                    $("#saveData").click(function () {
+                        var seatPropertyArray = [];
+                        let rowNo = 0,
+                            colNo = 0;
+                        $("#container .col-container").each(function (index) {
+                            rowNo = index + 1;
+                            for (let seat = 0; seat <= seatNo; seat++) {
+                                colNo = seat + 1;
+                                let seatProperty = {};
+                                seatProperty.col = colNo;
+                                seatProperty.row = rowNo;
+                                seatProperty.seatNo = $(this)
+                                    .find(".col:eq(" + seat + ")")
+                                    .text();
+
+                                seatProperty.seatPosition = seatPositionArray[seat];
+                                let passageValue = false;
+                                if (seatPositionArray[seat] == "P") {
+                                    passageValue = true;
+                                } else {
+                                    passageValue = false;
+                                }
+                                seatProperty.passageFlag = passageValue;
+                                seatPropertyArray.push(seatProperty);
+                            }
+                        });
+                        alert(JSON.stringify(seatPropertyArray));
+                    });
+
+
+
+                    $(document).on("click", ".col", function (e) {
+                        $(".col").removeClass("selected");
+                        $(this).addClass("selected");
+                        var pos = $(this).offset();
+
+                        $("#seatLayoutOperationList")
+                            .css({
+                                position: "absolute",
+                                top: pos.top - 30 + "px",
+                                left: pos.left + "px",
+                                display: "inline",
+                            })
+                            .appendTo($(this));
+
+                        e.stopPropagation();
+                    });
+
+                    $(document).on("click", "#seatLayoutOperationList", function (e) {
+                        let element = document.getElementById("seatLayoutOperationList");
+                        parent = element.parentElement;
+                        document.body.appendChild(element);
+                        element.style.display = "none";
+
+                        // parent.style.backgroundColor = document.body.style.backgroundColor;
+                        parent.textContent = "10";
+                        parent.style.opacity = 0;
+
+                        seatNo--;
+                        e.stopPropagation();
+
+                        let colGroup = document.getElementsByClassName("seat-number");
+
+                        // console.log(colGroup.length)
+                        let num = 1;
+                        for (let i of colGroup) {
+                            if (i.innerHTML != "") {
+                                i.innerHTML = num.toString().padStart(2, "0");
+                                // console.log(i);
+                                num++;
+                            }
+                        }
+                    });
+
+                    $("#changeFloatButton").click(function () {
+                        $(".myDiv .col").each(function () {
+                            $(this).css(
+                                "float",
+                                currentFloat === "left" ? "right" : "left"
+                            );
+                        });
+                        if (currentFloat == "left") currentFloat = "right";
+                        else currentFloat = "left";
+                    });
+
+                });
+
+
+            </script>
+        </div>
+    </div>
+    <button id="addDivButton">Add Div</button>
+    <button id="removeDivButton">Remove Div</button>
+    <button id="saveData">Save Data</button>
+
+    <button id="changeFloatButton">Change Float</button>
+</body>
+
+</html>
+

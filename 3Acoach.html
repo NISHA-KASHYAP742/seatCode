@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                
+            }
+            .container{
+                display: grid;
+                row-gap: 1px;
+                border-radius: 3px;
+            }
+            .row-container {
+                display: grid;
+                grid-template-columns: 120px 20px 40px;
+                background-color: #FEF2F4;
+                border: 2px solid rgb(225, 148, 148);
+                width: 180px;
+                border-radius: 3px;
+            }
+            .left-container {
+                display: grid;
+                grid-template-columns: 40px 40px 40px;
+                row-gap: 40px;
+                column-gap: 0px;
+                border-radius: 3px;
+                
+            }
+            .seat {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                background-color: #A7EDE7;
+                border: 2px solid rgb(225, 148, 148);
+                border-radius: 3px;
+                text-align:center;
+                padding:5px;
+            }
+            #Window {
+                background-color: #C5DFF8;   
+            }
+            #W1 {
+                background-color: #ACBCFF;
+  
+            }
+            #W2 {
+                background-color: #E6FFFD;
+  
+            }
+            #W3 {
+                background-color: #AEE2FF;
+            }
+            #Aside {
+				background-color: #A7EDE7;    
+            }
+            #Middle {
+                background-color: #FFD0D0;   
+            }
+            .right-container {
+                display: grid;
+                /*row-gap: 40px;*/
+                row-gap: 0px;
+                border-radius: 3px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Javascript will add rows here -->
+        </div>
+    </body>
+    <script>
+        let numberingSeats = function () {
+            let seatNo = 0;
+            let seats = document.getElementsByClassName("seat");
+            for (let seat of seats) {
+                seat.textContent = ++seatNo;
+            }
+        }
+        let addRow = function () {
+            let rowContainer = document.createElement('div');
+            rowContainer.classList.add("row-container");
+            rowContainer.innerHTML = `<div class="left-container">
+                    <div class="seat" id="Window"></div>
+                    <div class="seat" id="Middle"></div>
+                    <div class="seat" id="Aside"></div>
+                    <div class="seat"id="Window"></div>
+                    <div class="seat" id="Middle"></div>
+                    <div class="seat" id="Aside"></div>
+                </div>
+
+                <div class="gap"></div>
+
+                <div class="right-container">
+                    <div class="seat" id="W1"></div>
+                    <div class="seat" id="W2"></div>
+                    <div class="seat" id="W3"></div>
+                </div>`;
+            document.getElementsByClassName("container")[0].append(rowContainer);
+            numberingSeats();
+        }
+        for(var i=0;i<5;i++)
+        {
+        	        addRow();
+      
+        }
+
+    </script>
+</html>
